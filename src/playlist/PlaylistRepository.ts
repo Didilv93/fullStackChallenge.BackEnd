@@ -8,20 +8,24 @@ import { INSERT_ERROR } from '../shared/repository/constants';
 const fs = require('fs');
 
 export default class PlaylistRepository implements IPlaylistRepository {
-  listSongs(): Promise<any> {
+  listSongs(): Promise<Array<MusicModel>> {
     return new Promise(async (resolve: Function, reject: Function) => {
       try {
-        await fs.readFile(`./dataSource/${process.env.DATABASE_FILE_NAME}.json`, (err, data) => {
-          if (err) throw err;
-          const playlist = JSON.parse(data);
-          const result: Array<MusicModel> = playlist.map((item: any) => ({
-            id: item.id,
-            name: item.name,
-            artists: item.artists,
-            genre: item.genre
-          }));
-          resolve(result);
-        });
+        await fs.readFile(
+          `./dataSource/${process.env.DATABASE_PLAYLIST_FILE_NAME}.json`,
+          'utf8',
+          (err, data) => {
+            if (err) throw err;
+            const playlist = JSON.parse(data);
+            const result: Array<MusicModel> = playlist.map((item: any) => ({
+              id: item.id,
+              name: item.name,
+              artists: item.artists,
+              genre: item.genre
+            }));
+            resolve(result);
+          }
+        );
       } catch (error) {
         reject(
           new RepositoryException(
