@@ -31,4 +31,15 @@ export default class Controller extends BaseController {
       this.retornoErro(error, res);
     }
   };
+
+  listPlayListByIds = async (req: Request, res: Response) => {
+    try {
+      const playlistBLL = this.getLib();
+      this.paramsValidate(req.query);
+      const playlist: Array<MusicModel> = await playlistBLL.listPlayListByIds(req.query.listId);
+      return res.status(200).json(playlist);
+    } catch (error) {
+      this.retornoErro(error, res);
+    }
+  };
 }

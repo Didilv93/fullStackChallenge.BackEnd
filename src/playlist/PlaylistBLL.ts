@@ -21,4 +21,15 @@ export default class PlaylistBLL implements IPlaylistBLL {
       }
     });
   }
+
+  listPlayListByIds(listId: Array<String>): Promise<Array<MusicModel>> {
+    return new Promise(async (resolve: Function, reject: Function) => {
+      try {
+        resolve(await this.playlistRepository.listPlayListByIds(listId));
+      } catch (erro) {
+        logger.error(`Erro ao listar musicas`, obterIdLog(), erro);
+        reject(erro);
+      }
+    });
+  }
 }

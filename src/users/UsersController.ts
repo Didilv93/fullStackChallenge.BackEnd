@@ -17,8 +17,8 @@ export default class Controller extends BaseController {
       throw new ControllerException(INVALID_URL.code, INVALID_URL.message);
     }
     if (!!params.favoriteSongs) {
-      params.favoriteSongs.forEach((item: String) => {
-        if (!item) {
+      params.favoriteSongs.forEach((item: any) => {
+        if (!item || !item.id || isNaN(Number(item.rankingValue))) {
           throw new ControllerException(INVALID_URL.code, INVALID_URL.message);
         }
       });

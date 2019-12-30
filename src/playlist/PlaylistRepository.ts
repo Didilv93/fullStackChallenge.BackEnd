@@ -37,4 +37,21 @@ export default class PlaylistRepository implements IPlaylistRepository {
       }
     });
   }
+
+  listPlayListByIds(listId: Array<String>): Promise<Array<MusicModel>> {
+    return new Promise(async (resolve: Function, reject: Function) => {
+      try {
+        const allMusics = await this.listSongs();
+        resolve(listId.map((id: String) => allMusics.find((item: MusicModel) => item.id === id)));
+      } catch (error) {
+        reject(
+          new RepositoryException(
+            INSERT_ERROR.code,
+            INSERT_ERROR.message('Erro listar músicas'),
+            error
+          )
+        );
+      }
+    });
+  }
 }

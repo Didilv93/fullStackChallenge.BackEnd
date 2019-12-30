@@ -8,7 +8,7 @@ import { INSERT_ERROR } from '../shared/repository/constants';
 const fs = require('fs');
 
 export default class UsersRepository implements IUsersRepository {
-  registerUserVote(nickname: String, favoriteSongs: Array<String>): Promise<void> {
+  registerUserVote(nickname: String, favoriteSongs: Array<Object>): Promise<void> {
     return new Promise(async (resolve: Function, reject: Function) => {
       try {
         if (fs.existsSync(`./dataSource/${process.env.DATABASE_USERS_FILE_NAME}.json`)) {

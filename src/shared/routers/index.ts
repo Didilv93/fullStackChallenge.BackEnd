@@ -8,7 +8,8 @@ const usersController = new UsersController();
 
 const routers = Router();
 
-routers.get('/songs/', logManager, playlistController.listSongs);
+routers.get('/playlist/', logManager, playlistController.listSongs);
+routers.get('/playlist/ids', logManager, playlistController.listPlayListByIds);
 routers.get('/user/', logManager, usersController.getUser);
 routers.post('/user/registerVote/', logManager, usersController.registerUserVote);
 

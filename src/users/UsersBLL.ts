@@ -11,7 +11,7 @@ export default class UsersBLL implements IUsersBLL {
     this.usersRepository = usersRepository;
   }
 
-  registerUserVote(nickname: String, favoriteSongs: Array<String>): Promise<void> {
+  registerUserVote(nickname: String, favoriteSongs: Array<Object>): Promise<void> {
     return new Promise(async (resolve: Function, reject: Function) => {
       try {
         await this.usersRepository.registerUserVote(nickname.toLowerCase(), favoriteSongs);
