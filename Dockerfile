@@ -9,7 +9,7 @@ COPY tsconfig*.json ./
 
 COPY . .
 
-RUN npm install
+RUN npm install --silent
 
 EXPOSE 3001
 
