@@ -6,8 +6,8 @@ COPY package.json /usr/app
 COPY src /usr/app/src
 COPY tsconfig.json /usr/app
 
-RUN npm install --silent
+RUN npm install && npm run build
 
-EXPOSE 3001
+EXPOSE 3000
 
-CMD [ "npm", "dev" ]
+CMD [ "npm", "start" ]
