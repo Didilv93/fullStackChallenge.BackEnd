@@ -1,13 +1,16 @@
-FROM node:10-alpine
+FROM node:alpine
 
-WORKDIR /usr/app
+WORKDIR /app
 
-COPY package.json /usr/app
-COPY src /usr/app/src
-COPY tsconfig.json /usr/app
+ENV PATH /app/node_modules/.bin:$PATH
 
-RUN npm install && npm run build
+COPY package*.json ./
+COPY tsconfig*.json ./
 
-EXPOSE 3000
+COPY . .
 
-CMD [ "npm", "start" ]
+RUN npm install --silent
+
+EXPOSE 3001
+
+CMD ["npm", "start"]
