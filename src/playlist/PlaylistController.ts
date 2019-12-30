@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 
 import PlaylistBLL from './PlaylistBLL';
 import PlaylistRepository from './PlaylistRepository';
+import UsersRepository from '../users/UsersRepository';
 import MusicModel from './MusicModel';
 import BaseController from '../shared/controllers/BaseController';
 import ControllerException from '../shared/exception/ControllerException';
@@ -12,14 +13,8 @@ export default class Controller extends BaseController {
     super();
   }
 
-  paramsValidate(params: any): void {
-    if (params.id && isNaN(Number(params.id))) {
-      throw new ControllerException(INVALID_URL.code, INVALID_URL.message);
-    }
-  }
-
   getLib(): PlaylistBLL {
-    return new PlaylistBLL(new PlaylistRepository());
+    return new PlaylistBLL(new PlaylistRepository(), new UsersRepository());
   }
 
   listSongs = async (req: Request, res: Response) => {
@@ -32,11 +27,10 @@ export default class Controller extends BaseController {
     }
   };
 
-  listPlayListByIds = async (req: Request, res: Response) => {
+  listPlayListFinalClassification = async (req: Request, res: Response) => {
     try {
       const playlistBLL = this.getLib();
-      this.paramsValidate(req.query);
-      const playlist: Array<MusicModel> = await playlistBLL.listPlayListByIds(req.query.listId);
+      const playlist: Array<MusicModel> = await playlistBLL.listPlayListFinalClassification();
       return res.status(200).json(playlist);
     } catch (error) {
       this.retornoErro(error, res);
