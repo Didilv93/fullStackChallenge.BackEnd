@@ -47,16 +47,6 @@ export default class Controller extends BaseController {
     }
   };
 
-  listUsers = async (req: Request, res: Response) => {
-    try {
-      const usersBLL = this.getLib();
-      const users: Array<UserModel> = await usersBLL.listUsers();
-      return res.status(200).json(users);
-    } catch (error) {
-      this.retornoErro(error, res);
-    }
-  };
-
   registerUserVote = async (req: Request, res: Response) => {
     try {
       const {
