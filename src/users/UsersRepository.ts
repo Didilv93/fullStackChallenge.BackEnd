@@ -16,22 +16,20 @@ export default class UsersRepository implements IUsersRepository {
             `./dataSource/${process.env.DATABASE_USERS_FILE_NAME}.json`,
             'utf8',
             function readFileCallback(err, data) {
-              if (err) {
-                throw err;
-                const users = JSON.parse(data);
-                const user = users.find((item: any) => item.nickname === nickname);
-                if (user && user.nickname) throw 'voto já computado';
-                users.push({ nickname: nickname, favoriteSongs: favoriteSongs });
-                const json = JSON.stringify(users);
-                fs.writeFile(
-                  `./dataSource/${process.env.DATABASE_USERS_FILE_NAME}.json`,
-                  json,
-                  'utf8',
-                  (err: any) => {
-                    throw err;
-                  }
-                );
-              }
+              if (err) throw err;
+              const users = JSON.parse(data);
+              const user = users.find((item: any) => item.nickname === nickname);
+              if (user && user.nickname) throw 'Voto já registrado';
+              users.push({ nickname: nickname, favoriteSongs: favoriteSongs });
+              const json = JSON.stringify(users);
+              fs.writeFile(
+                `./dataSource/${process.env.DATABASE_USERS_FILE_NAME}.json`,
+                json,
+                'utf8',
+                (err: any) => {
+                  throw err;
+                }
+              );
             }
           );
         } else {
@@ -79,6 +77,35 @@ export default class UsersRepository implements IUsersRepository {
           resolve({
             nickname: nickname
           });
+        }
+      } catch (error) {
+        reject(
+          new RepositoryException(
+            INSERT_ERROR.code,
+            INSERT_ERROR.message('Erro buscar usuário'),
+            error
+          )
+        );
+      }
+    });
+  }
+
+  listUsers(): Promise<Array<UserModel>> {
+    return new Promise(async (resolve: Function, reject: Function) => {
+      try {
+        if (fs.existsSync(`./dataSource/${process.env.DATABASE_USERS_FILE_NAME}.json`)) {
+          await fs.readFile(
+            `./dataSource/${process.env.DATABASE_USERS_FILE_NAME}.json`,
+            'utf8',
+            (err, data) => {
+              if (err) throw err;
+
+              const users = JSON.parse(data);
+              resolve([...users]);
+            }
+          );
+        } else {
+          resolve([]);
         }
       } catch (error) {
         reject(

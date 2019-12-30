@@ -11,6 +11,7 @@ const routers = Router();
 routers.get('/playlist/', logManager, playlistController.listSongs);
 routers.get('/playlist/ids', logManager, playlistController.listPlayListByIds);
 routers.get('/user/', logManager, usersController.getUser);
+routers.get('/users/', logManager, usersController.listUsers);
 routers.post('/user/registerVote/', logManager, usersController.registerUserVote);
 
 export { routers };

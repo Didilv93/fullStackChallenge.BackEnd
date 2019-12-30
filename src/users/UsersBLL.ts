@@ -32,4 +32,15 @@ export default class UsersBLL implements IUsersBLL {
       }
     });
   }
+
+  listUsers(): Promise<Array<UserModel>> {
+    return new Promise(async (resolve: Function, reject: Function) => {
+      try {
+        resolve(await this.usersRepository.listUsers());
+      } catch (erro) {
+        logger.error(`Erro ao buscar usuário por apilido`, obterIdLog(), erro);
+        reject(erro);
+      }
+    });
+  }
 }

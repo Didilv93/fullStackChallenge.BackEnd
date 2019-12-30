@@ -23,6 +23,13 @@ export default class Controller extends BaseController {
         }
       });
     }
+    if (!!params.listId) {
+      params.listId.forEach((id: string) => {
+        if (!id) {
+          throw new ControllerException(INVALID_URL.code, INVALID_URL.message);
+        }
+      });
+    }
   }
 
   getLib(): UsersBLL {
@@ -34,6 +41,16 @@ export default class Controller extends BaseController {
       const usersBLL = this.getLib();
       this.paramsValidate(req.query);
       const users: UserModel = await usersBLL.getUser(req.query.nickname);
+      return res.status(200).json(users);
+    } catch (error) {
+      this.retornoErro(error, res);
+    }
+  };
+
+  listUsers = async (req: Request, res: Response) => {
+    try {
+      const usersBLL = this.getLib();
+      const users: Array<UserModel> = await usersBLL.listUsers();
       return res.status(200).json(users);
     } catch (error) {
       this.retornoErro(error, res);
